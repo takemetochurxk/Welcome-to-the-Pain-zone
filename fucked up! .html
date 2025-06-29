@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pain Zone - موقع الرياضة والصحة</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #eee;
+      direction: rtl;
+      overflow-x: hidden;
+    }
+    header {
+      background-color: #1f1f1f;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    .menu-btn {
+      font-size: 28px;
+      cursor: pointer;
+      color: #eee;
+      border: none;
+      background: none;
+    }
+    .menu-btn:focus {
+      outline: none;
+    }
+    nav {
+      position: fixed;
+      right: -250px;
+      top: 60px;
+      width: 250px;
+      height: calc(100% - 60px);
+      background-color: #222;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      padding-top: 10px;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.7);
+      z-index: 1001;
+    }
+    nav.open {
+      right: 0;
+    }
+    nav a {
+      padding: 15px 20px;
+      color: #eee;
+      text-decoration: none;
+      border-bottom: 1px solid #444;
+      transition: background-color 0.3s;
+    }
+    nav a:hover, nav a.active {
+      background-color: #444;
+    }
+    main {
+      padding: 80px 20px 20px 20px;
+      max-width: 960px;
+      margin: 0 auto;
+      min-height: 80vh;
+    }
+    .hidden {
+      display: none;
+    }
+    /* أزرار اللغة */
+    .language-switcher {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .language-btn {
+      background: #444;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+    .language-btn:hover, .language-btn.active {
+      background-color: #1db954;
+      color: white;
+    }
+    /* صفحة Home */
+    #home img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    #home h1, #home h2 {
+      color: #1db954;
+    }
+    #home p {
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    /* صفحة Sign In */
+    #sign-in button {
+      width: 280px;
+      margin: 10px auto;
+      padding: 12px 16px;
+      border-radius: 30px;
+      border: none;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    #sign-in button:hover {
+      transform: scale(1.05);
+    }
+    #sign-in .google {
+      background-color: white;
+      color: #444;
+    }
+    #sign-in .facebook {
+      background-color: #1877f2;
+      color: white;
+    }
+    #sign-in .apple {
+      background-color: black;
+      color: white;
+    }
+    #sign-in .btn-icon {
+      width: 24px;
+      height: 24px;
+    }
+    #user-info {
+      margin-top: 25px;
+      color: #ccc;
+      font-size: 18px;
+      text-align: center;
+    }
+    #sign-in #sign-out-btn {
+      margin-top: 15px;
+      background: #e63946;
+      color: white;
+      border-radius: 20px;
+      padding: 10px 25px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #sign-in #sign-out-btn:hover {
+      background-color: #b82c39;
+    }
+    /* صفحة Rate Us */
+    #rate-us {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    #rate-us h2 {
+      color: #1db954;
+      margin-bottom: 15px;
+    }
+    #rate-us .stars {
+      margin: 15px 0;
+    }
+    #rate-us .star {
+      font-size: 35px;
+      color: #555;
+      cursor: pointer;
+      transition: color 0.3s;
+      user-select: none;
+    }
+    #rate-us .star.selected,
+    #rate-us .star:hover,
+    #rate-us .star:hover ~ .star {
+      color: #ffdd00;
+    }
+    #rate-us textarea {
+      width: 100%;
+      height: 100px;
+      border-radius: 12px;
+      border: 1px solid #444;
+      background-color: #222;
+      color: #eee;
+      padding: 10px;
+      resize: vertical;
+      font-size: 16px;
+    }
+    #rate-us button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 25px;
+      background-color: #1db954;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #rate-us button:hover {
+      background-color: #139e3f;
+    }
+    button:active, nav a:active {
+      opacity: 0.7;
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="menu-btn" id="menu-btn" aria-label="فتح القائمة">&#9776;</button>
+    <nav id="sidebar" aria-label="القائمة الرئيسية">
+      <a href="#" data-section="home" tabindex="0" class="active">الرئيسية</a>
+      <a href="#" data-section="sign-in" tabindex="0">تسجيل الدخول</a>
+      <a href="#" data-section="rate-us" tabindex="0">قيمنا</a>
+    </nav>
+    <div class="language-switcher" role="group" aria-label="تبديل اللغة">
+      <button class="language-btn active" data-lang="ar" title="العربية">ع</button>
+      <button class="language-btn" data-lang="en" title="English">EN</button>
+      <button class="language-btn" data-lang="ru" title="Русский">RU</button>
+      <button class="language-btn" data-lang="tr" title="Türkçe">TR</button>
+    </div>
+  </header>
+  <main>
+    <!-- Home Section -->
+    <section id="home" class="section" tabindex="0">
+      <h1 data-key="homeTitle">أهلاً بك في منطقة الألم</h1>
+      <img src="https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?auto=format&fit=crop&w=800&q=80" alt="جيم رياضي" />
+      <h2 data-key="bestFoodsTitle">أفضل الأكلات للجيم</h2>
+      <p data-key="bestFoodsText">
+        تناول البروتينات الصحية مثل الدجاج والسمك مع الخضروات مهم لبناء العضلات.
+      </p>
+      <h2 data-key="bestExercisesTitle">أفضل التمارين</h2>
+      <p data-key="bestExercisesText">
+        تمارين المقاومة مثل رفع الأثقال تساعد في زيادة القوة والكتلة العضلية.
+      </p>
+      <h2 data-key="bestTimesTitle">الوقت المناسب للتمارين</h2>
+      <p data-key="bestTimesText">
+        الصباح الباكر أو بعد الظهر من الأوقات المثالية للتمرين.
+      </p>
+    </section>
+    <!-- Sign In Section -->
+    <section id="sign-in" class="section hidden" tabindex="0">
+      <h1 data-key="signInTitle">تسجيل الدخول</h1>
+      <button class="google" id="googleSignInBtn" aria-label="تسجيل الدخول عبر جوجل">
+        <img class="btn-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
+        <span data-key="signInGoogle">تسجيل الدخول بجوجل</span>
+      </button>
+      <button class="facebook" id="facebookSignInBtn" aria-label="تسجيل الدخول عبر فيسبوك">
+        <img class="btn-icon" src="https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg" alt="Facebook Logo" />
+        <span data-key="signInFacebook">تسجيل الدخول بفيسبوك</span>
+      </button>
+      <button class="apple" id="appleSignInBtn" aria-label="تسجيل الدخول عبر آبل">
+        <img class="btn-icon" src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo" />
+        <span data-key="signInApple">تسجيل الدخول بآبل</span>
+      </button>
+      <div id="user-info" class="hidden"></div>
+      <button id="sign-out-btn" class="hidden" data-key="signOutBtn">تسجيل الخروج</button>
+    </section>
+    <!-- Rate Us Section -->
+    <section id="rate-us" class="section hidden" tabindex="0">
+      <h2 data-key="rateUsTitle">قيمنا</h2>
+      <p data-key="rateUsDescription">نرجو تقييم موقعنا لنقدم الأفضل دائماً</p>
+      <div class="stars" role="radiogroup" aria-label="تقييم النجوم">
+        <span class="star" data-value="1" role="radio" aria-checked="false" tabindex="0">&#9733;</span>
+        <span class="star" data-value="2" role="radio" aria-checked="false" tabindex="-1">&#9733;</span>
+        <span class="star" data-value="3" role="radio" aria-checked="false" tabindex="-1">&#9733;</span>
+        <span class="star" data-value="4" role="radio" aria-checked="false" tabindex="-1">&#9733;</span>
+        <span class="star" data-value="5" role="radio" aria-checked="false" tabindex="-1">&#9733;</span>
+      </div>
+      <textarea placeholder="اكتب ملاحظاتك هنا..." aria-label="ملاحظات"></textarea>
+      <button id="submitRatingBtn" data-key="submitRatingBtn">إرسال التقييم</button>
+      <p id="rating-message" role="alert" aria-live="polite" style="margin-top:15px; color:#1db954;"></p>
+    </section>
+  </main>
+
+<script>
+  // فتح وغلق القائمة الجانبية عند الضغط على زر القائمة
+  const menuBtn = document.getElementById('menu-btn');
+  const sidebar = document.getElementById('sidebar');
+
+  menuBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+  });
+
+  // إغلاق القائمة عند الضغط على رابط في القائمة مع التنقل
+  const navLinks = sidebar.querySelectorAll('a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      // إزالة التفعيل من كل الروابط
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      // إغلاق القائمة
+      sidebar.classList.remove('open');
+
+      // إظهار القسم المناسب وإخفاء الباقي
+      const sectionToShow = link.getAttribute('data-section');
+      document.querySelectorAll('main .section').forEach(section => {
+        if(section.id === sectionToShow) {
+          section.classList.remove('hidden');
+          section.focus();
+        } else {
+          section.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // ترجمة النصوص لكل لغة
+  const translations = {
+    ar: {
+      homeTitle: "أهلاً بك في منطقة الألم",
+      bestFoodsTitle: "أفضل الأكلات للجيم",
+      bestFoodsText: "تناول البروتينات الصحية مثل الدجاج والسمك مع الخضروات مهم لبناء العضلات.",
+      bestExercisesTitle: "أفضل التمارين",
+      bestExercisesText: "تمارين المقاومة مثل رفع الأثقال تساعد في زيادة القوة والكتلة العضلية.",
+      bestTimesTitle: "الوقت المناسب للتمارين",
+      bestTimesText: "الصباح الباكر أو بعد الظهر من الأوقات المثالية للتمرين.",
+      signInTitle: "تسجيل الدخول",
+      signInGoogle: "تسجيل الدخول بجوجل",
+      signInFacebook: "تسجيل الدخول بفيسبوك",
+      signInApple: "تسجيل الدخول بآبل",
+      signOutBtn: "تسجيل الخروج",
+      rateUsTitle: "قيمنا",
+      rateUsDescription: "نرجو تقييم موقعنا لنقدم الأفضل دائماً",
+      submitRatingBtn: "إرسال التقييم"
+    },
+    en: {
+      homeTitle: "Welcome to Pain Zone",
+      bestFoodsTitle: "Best Foods for Gym",
+      bestFoodsText: "Eating healthy proteins like chicken and fish with vegetables is important for muscle building.",
+      bestExercisesTitle: "Best Exercises",
+      bestExercisesText: "Resistance exercises like weightlifting help increase strength and muscle mass.",
+      bestTimesTitle: "Best Time to Exercise",
+      bestTimesText: "Early morning or afternoon are ideal times to work out.",
+      signInTitle: "Sign In",
+      signInGoogle: "Sign in with Google",
+      signInFacebook: "Sign in with Facebook",
+      signInApple: "Sign in with Apple",
+      signOutBtn: "Sign Out",
+      rateUsTitle: "Rate Us",
+      rateUsDescription: "Please rate our site so we can keep improving",
+      submitRatingBtn: "Submit Rating"
+    },
+    ru: {
+      homeTitle: "Добро пожаловать в Pain Zone",
+      bestFoodsTitle: "Лучшие продукты для спортзала",
+      bestFoodsText: "Употребление здорового белка, такого как курица и рыба с овощами, важно для наращивания мышц.",
+      bestExercisesTitle: "Лучшие упражнения",
+      bestExercisesText: "Силовые тренировки, такие как поднятие тяжестей, помогают увеличить силу и мышечную массу.",
+      bestTimesTitle: "Лучшее время для тренировок",
+      bestTimesText: "Раннее утро или после обеда — идеальное время для тренировки.",
+      signInTitle: "Войти",
+      signInGoogle: "Войти через Google",
+      signInFacebook: "Войти через Facebook",
+      signInApple: "Войти через Apple",
+      signOutBtn: "Выйти",
+      rateUsTitle: "Оцените нас",
+      rateUsDescription: "Пожалуйста, оцените наш сайт, чтобы мы могли улучшаться",
+      submitRatingBtn: "Отправить оценку"
+    },
+    tr: {
+      homeTitle: "Pain Zone'a Hoş Geldiniz",
+      bestFoodsTitle: "Spor Salonu için En İyi Yiyecekler",
+      bestFoodsText: "Tavuk ve balık gibi sağlıklı proteinler sebzelerle kas yapımı için önemlidir.",
+      bestExercisesTitle: "En İyi Egzersizler",
+      bestExercisesText: "Ağırlık kaldırma gibi direnç egzersizleri güç ve kas kütlesini artırmaya yardımcı olur.",
+      bestTimesTitle: "Egzersiz için En İyi Zaman",
+      bestTimesText: "Erken sabah veya öğleden sonra egzersiz için ideal zamanlardır.",
+      signInTitle: "Giriş Yap",
+      signInGoogle: "Google ile Giriş Yap",
+      signInFacebook: "Facebook ile Giriş Yap",
+      signInApple: "Apple ile Giriş Yap",
+      signOutBtn: "Çıkış Yap",
+      rateUsTitle: "Bizi Değerlendir",
+      rateUsDescription: "Daha iyisini sunabilmemiz için lütfen sitemizi değerlendirin",
+      submitRatingBtn: "Değerlendirmeyi Gönder"
+    }
+  };
+
+  // تغيير اللغة وتحديث النصوص
+  const langButtons = document.querySelectorAll('.language-btn');
+
+  function updateLanguage(lang) {
+    // تغيير زر اللغة الفعّال
+    langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+
+    // تحديث كل العناصر التي تحمل data-key
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.dataset.key;
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+  }
+
+  langButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      updateLanguage(btn.dataset.lang);
+    });
+  });
+
+  // افتراضي العربية
+  updateLanguage('ar');
+
+</script>
+
+</body>
+</html>
