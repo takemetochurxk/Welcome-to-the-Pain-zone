@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Silent Arena - Ahmad Mustafa</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background: black;
+      color: white;
+      overflow: hidden;
+    }
+
+    .page {
+      display: none;
+      padding: 20px;
+      height: 100vh;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .active {
+      display: block;
+    }
+
+    h1 {
+      font-size: 2em;
+      text-align: center;
+      color: red;
+      margin-top: 30px;
+    }
+
+    button {
+      background: red;
+      border: none;
+      padding: 15px 25px;
+      margin: 15px;
+      font-size: 1em;
+      cursor: pointer;
+      color: white;
+      border-radius: 10px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin: 10px auto;
+      display: block;
+      border-radius: 5px;
+    }
+
+    .chat-box {
+      background: #111;
+      border: 2px solid red;
+      padding: 15px;
+      height: 300px;
+      overflow-y: auto;
+      margin: 20px auto;
+      width: 90%;
+      border-radius: 10px;
+    }
+
+    .avatar {
+      display: block;
+      margin: 0 auto;
+      width: 150px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px red;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<audio autoplay loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/11/audio_c4076b263e.mp3" type="audio/mpeg">
+</audio>
+
+<div class="page active" id="page1">
+  <h1>Silent Arena</h1>
+  <h2 style="text-align:center;">Welcome, Ahmad Mustafa</h2>
+  <input type="text" id="nickname" placeholder="Enter your codename..." />
+  <button onclick="nextPage(2)">Continue</button>
+</div>
+
+<div class="page" id="page2">
+  <h1>Choose a Package</h1>
+  <button onclick="nextPage(3)">10 Minutes - $1</button>
+  <button onclick="nextPage(3)">30 Minutes - $2</button>
+  <button onclick="nextPage(3)">Unlimited - $5</button>
+</div>
+
+<div class="page" id="page3">
+  <h1>Select Arena</h1>
+  <button onclick="nextPage(4)">Black Cell</button>
+  <button onclick="nextPage(4)">Digital Blood</button>
+  <button onclick="nextPage(4)">Tactical Infiltration</button>
+</div>
+
+<div class="page" id="page4">
+  <h1>The War Zone</h1>
+  <img src="https://i.ibb.co/dJ02fp7/kaylee-avatar.jpg" alt="Kaylee" class="avatar"/>
+  <div class="chat-box" id="chat">
+    <p><strong>KaiLee:</strong> مرحباً بك في ساحة الموت...</p>
+  </div>
+  <input type="text" id="msgInput" placeholder="اكتب رسالتك هنا..." />
+  <button onclick="sendMessage()">إرسال</button>
+</div>
+
+<script>
+  function nextPage(num) {
+    let pages = document.querySelectorAll('.page');
+    pages.forEach(p => p.classList.remove('active'));
+    document.getElementById('page' + num).classList.add('active');
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('msgInput');
+    const chat = document.getElementById('chat');
+    if (input.value.trim() === "") return;
+    chat.innerHTML += "<p><strong>أنت:</strong> " + input.value + "</p>";
+    chat.innerHTML += "<p><strong>KaiLee:</strong> " + getBotReply(input.value) + "</p>";
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function getBotReply(msg) {
+    const lower = msg.toLowerCase();
+    if (lower.includes("جاهز")) return "لنبدأ المهمة!";
+    if (lower.includes("خائف")) return "الخوف هو بداية النهاية.";
+    if (lower.includes("أين")) return "الموقع: الزنزانة السوداء.";
+    return "أعد ما قلت، أيها الجندي.";
+  }
+</script>
+
+</body>
+</html>
